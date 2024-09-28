@@ -24,9 +24,13 @@ const db = require('../db');
     }
 }*/
 
-const ClienteService = {
+/*const ClienteService = {
     inserir: async (telefone, celular, email, senha, endereco, tipo) => {
         try {
+
+            // Obtém o último ID da tabela Cliente
+            const [lastIdRows] = await db.query('SELECT MAX(ID) AS lastId FROM Cliente');
+            const newId = (lastIdRows[0].lastId || 0) + 1; // Incrementa o ID
             // SQL para inserir o cliente
             const query = `
                 INSERT INTO cliente (telefone, celular, email, senha, endereco, tipo)
@@ -40,7 +44,7 @@ const ClienteService = {
             const senhaCliente = senha;
             const enderecoCliente = endereco;
             const tipoCliente = tipo;
-            
+
             // Executando a query com as variáveis separadas
             const [result] = await db.execute(query, [
                 telefoneCliente,
@@ -51,8 +55,45 @@ const ClienteService = {
                 tipoCliente
             ]);
 
-            // Retorna o ID (codigo) gerado pelo banco
-            return result.insertId;
+            // Retorna o último ID inserido
+            const [rows] = await db.query('SELECT LAST_INSERT_ID() as id');
+            return rows[0].id; // Retorna o ID do cliente inserido
+
+        } catch (error) {
+            throw new Error('Erro ao inserir cliente: ' + error.message);
+        }
+    }
+};
+
+module.exports = ClienteService;*/
+
+
+const ClienteService = {
+    inserir: async (telefone, celular, email, senha, endereco, tipo) => {
+        try {
+            // Obtém o último ID da tabela Cliente
+            const [lastIdRows] = await db.query('SELECT MAX(ID) AS lastId FROM Cliente');
+            const newId = (lastIdRows[0].lastId || 0) + 1; // Incrementa o ID
+
+            // SQL para inserir o cliente com o novo ID
+            const query = `
+                INSERT INTO Cliente (ID, Telefone, Celular, Email, Senha, Endereco, Tipo)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            `;
+
+            // Executando a query com o novo ID e os dados do cliente
+            await db.execute(query, [
+                newId,
+                telefone,
+                celular,
+                email,
+                senha,
+                endereco,
+                tipo
+            ]);
+
+            return newId; // Retorna o novo ID do cliente inserido
+
         } catch (error) {
             throw new Error('Erro ao inserir cliente: ' + error.message);
         }

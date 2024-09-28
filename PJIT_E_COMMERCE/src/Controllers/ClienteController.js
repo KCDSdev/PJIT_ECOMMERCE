@@ -17,7 +17,7 @@ module.exports =
                 
                 // Prepara o resultado, sem incluir 'data_Criacao' e 'codigo', que são gerados pelo banco
                 json.result = {
-                    codigo: ClienteCodigo,  // Obtido do banco de dados
+                    ClienteCodigo,
                     telefone,
                     celular,
                     email,
