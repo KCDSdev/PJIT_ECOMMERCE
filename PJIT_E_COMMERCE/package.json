@@ -1,5 +1,5 @@
 {
-  "name": "quickbuy",
+  "name": "stuttgart",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "express": "^4.21.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.11.3",
-    "quickbuy": "file:"
+    "stuttgart": "file:"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"

@@ -1,37 +1,37 @@
+// Exemplo de como pode ser o seu ClienteController.js
 const ClienteService = require('../Services/ClienteService');
 
-module.exports =
-{
+const ClienteController = {
     inserir: async (req, res) => {
-        let json = { error: '', result: {} };
+        const { nome, tipo, telefone, celular, email, senha, endereco   } = req.body; // Extrai os campos do corpo da requisição
+        console.log('Dados recebidos:', { nome, tipo, telefone, celular, email, senha, endereco });
 
-        // Desestruturação de campos enviados no body da requisição
-        let { telefone, celular, email, senha, endereco, tipo } = req.body;
-        console.log('Dados recebidos:', { telefone, celular, email, senha, endereco, tipo });
-
-        // Verificação se todos os campos obrigatórios foram enviados
-        if (telefone && celular && email && senha && endereco && tipo) {
+        // Verifica se todos os campos são fornecidos
+        if (nome && tipo && telefone && celular && email && senha && endereco) {
             try {
-                // Chama o método inserir do ClienteService e obtém o código do cliente inserido
-                let ClienteCodigo = await ClienteService.inserir(telefone, celular, email, senha, endereco, tipo);
-                
-                // Prepara o resultado, sem incluir 'data_Criacao' e 'codigo', que são gerados pelo banco
-                json.result = {
-                    ClienteCodigo,
-                    telefone,
-                    celular,
-                    email,
-                    endereco,
-                    tipo
-                };
+                const clienteCodigo = await ClienteService.inserir(nome,tipo, telefone, celular, email, senha, endereco );
+                // Responde com os dados inseridos
+                res.json({
+                    result: {
+                        nome,
+                        tipo,
+                        telefone,
+                        celular,
+                        email,
+                        endereco
+                    }
+                });
             } catch (error) {
-                json.error = 'Erro ao inserir cliente: ' + error.message;
+                res.status(500).json({
+                    error: `Erro ao inserir cliente: ${error.message}`
+                });
             }
         } else {
-            json.error = 'Campos não enviados';
+            res.status(400).json({
+                error: 'Todos os campos são obrigatórios'
+            });
         }
-
-        // Retorna o JSON com o resultado ou o erro
-        res.json(json);
     }
-}
+};
+
+module.exports = ClienteController;

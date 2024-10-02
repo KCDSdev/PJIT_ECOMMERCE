@@ -9,6 +9,8 @@ const server = express();
 server.use(cors());
 server.use(bodyParser.json()); // Adicione esta linha
 server.use(bodyParser.urlencoded({ extended: false }));
+
+
 server.use('/api', routes);
 
 
