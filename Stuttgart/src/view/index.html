@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veículos - Stuttgart</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div id="name">
+            <h1>
+                <strong>Stuttgart</strong>
+            </h1>
+        </div>
+        <div id="components">
+            <button id="login-button" onclick="showLoginForm()">
+                <i class="fas fa-user" aria-hidden="true"></i> Login
+            </button>
+            <div id="user-info" style="display: none;">
+                <i class="fas fa-user-circle" aria-hidden="true"></i> <!-- Ícone do usuário -->
+                <span id="username-display"></span> <!-- Nome do usuário logado -->
+                <button onclick="logout()">Sair</button> <!-- Botão para logout -->
+            </div>
+        </div>
+
+        <div id="login-form" style="display: none;">
+            <h2>Login</h2>
+            <input type="text" id="Email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Senha" required>
+            <button onclick="login()">Entrar</button>
+            <button onclick="hideLoginForm()">Cadastrar</button>
+        </div>
+    </header>
+
+    <hr>
+    <div id="veiculos-container"></div>
+    <script src="./config.js"></script>
+    <script src="./login.js"></script>
+
+</body>
+
+</html>

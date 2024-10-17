@@ -1,29 +1,21 @@
 const express = require('express');
 const router = express.Router();
 
+/**Importarção do Controller */
 const ClienteController = require('./Controllers/ClienteController');
 const VeiculoController = require('./Controllers/VeiculoController'); // Importa o VeiculoController
 
-
+/**Tratamento das Rotas dos Clientes */
 router.get('/cliente', ClienteController.listarClientes);
+router.post('/cliente/autenticar', ClienteController.autenticarCliente); // Mudei para post
 router.post('/cliente', ClienteController.adicionarCliente);
-router.put('/cliente/:id', ClienteController.editarCliente);
+router.put('/cliente/:id', ClienteController.atualizarCliente);
+router.delete('/cliente/:id', ClienteController.deletarCliente);
 
-
-
-
-
-
-// Rota para listar todos os veículos
+/**Tratamento das Rotas dos Veiculos */
 router.get('/veiculos', VeiculoController.listarVeiculos);
-
-// Rota para adicionar um novo veículo
 router.post('/veiculos', VeiculoController.adicionarVeiculo);
-
-// Rota para editar um veículo existente pelo ID
 router.put('/veiculos/:id', VeiculoController.editarVeiculo);
-
-// Rota para remover um veículo pelo ID
 router.delete('/veiculos/:id', VeiculoController.removerVeiculo);
 
 

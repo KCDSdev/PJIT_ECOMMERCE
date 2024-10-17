@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: linear-gradient(to right, #ffffff, #8d8425); /* Degradê de branco para dourado */
+}
+
+header {
+    display: flex; /* Usar flexbox para alinhar itens horizontalmente */
+    justify-content: flex-end; /* Alinhar todos os itens à direita */
+    align-items: center; /* Alinhar verticalmente ao centro */
+    padding: 10px 20px; /* Espaçamento interno */
+}
+
+#user-info {
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
+}
+
+#user-info i {
+    margin-right: 5px; /* Espaço entre o ícone e o nome */
+}
+
+#user-info button {
+    background-color: #ff4c4c; /* Cor de fundo vermelha */
+    color: white; /* Cor do texto branca */
+    border: none; /* Remove a borda */
+    padding: 10px 15px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Cursor em forma de mão */
+    transition: background-color 0.3s ease; /* Transição suave para a mudança de cor */
+    margin-left: 10px; /* Espaço entre o nome do usuário e o botão de logout */
+}
+
+#user-info button:hover {
+    background-color: #ff1a1a; /* Cor de fundo mais escura ao passar o mouse */
+}
+
+#name {
+    margin-right: 20px; /* Espaçamento entre o nome da loja e o login */
+}
+
+#name h1 {
+    font-size: 80px; /* Tamanho do texto */
+    font-family: 'Paint Brush Script', sans-serif;                                               
+    margin: 0; /* Remover margens padrão do h1 */
+}
+
+#components {
+    display: flex; /* Usar flexbox para alinhar ícone e texto */
+    align-items: center; /* Alinhar verticalmente ao centro */
+}
+
+#components p {
+    margin: 0; /* Remover margens padrão */
+    font-size: 18px; /* Tamanho do texto do login */
+}
+
+#components i {
+    margin-right: 5px; /* Espaçamento entre o ícone e o texto */
+    font-size: 18px; /* Tamanho do ícone */
+}
+
+#login-button {
+    background-color: transparent; /* Fundo transparente */
+    border: none; /* Sem borda */
+    cursor: pointer; /* Cursor de ponteiro ao passar o mouse */
+    font-size: 18px; /* Tamanho do texto */
+    display: flex; /* Usar flexbox para alinhar ícone e texto */
+    align-items: center; /* Alinhar verticalmente ao centro */
+}
+
+#veiculos-container {
+    padding: 2%;
+    display: flex;
+    flex-wrap: wrap; /* Para permitir que os veículos se movam para a próxima linha */
+    justify-content: center;
+    gap: 20px; /* Espaçamento entre os veículos */
+}
+
+.veiculo {
+    background-color: #ffffff; /* Cor de fundo dos cartões dos veículos */
+    border: 2px solid #007BFF; /* Cor e espessura da borda */
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 15px; /* Espaçamento interno */
+    width: 400px; /* Largura fixa para os cartões dos veículos */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidade */
+}
+
+.veiculo h2 {
+    margin-top: 0; /* Remove margem superior do título */
+}
+
+.veiculo-imagem {
+    width: 300px; /* Ajuste a largura conforme necessário */
+    height: 200px; /* Ajuste a altura conforme necessário */
+    background-size: cover; /* Faz a imagem cobrir todo o elemento */
+    background-position: center; /* Centraliza a imagem */
+    margin: 10px 0; /* Margem para espaçamento */
+}

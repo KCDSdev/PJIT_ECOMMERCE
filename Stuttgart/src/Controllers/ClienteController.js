@@ -1,6 +1,6 @@
 // Importa o serviço de Cliente, onde está a lógica de negócios relacionada a clientes
 const ClienteService = require('../Services/ClienteService');
-const { PessoaFisica, PessoaJuridica } = require('../Model/ClienteModel'); // Importa os modelos
+const Cliente = require('../Model/ClienteModel'); // Importa o modelo Cliente
 
 class ClienteController {
     // Método para listar todos os clientes
@@ -16,143 +16,111 @@ class ClienteController {
         }
     }
 
-    //*------------------------------------------------------------------------------------------------------------------------- */
+    // Método para buscar um cliente por email e senha
+    static async autenticarCliente(req, res) {
+        const { email, senha } = req.body; // O email e a senha devem ser enviados no corpo da requisição
 
-    // Método para adicionar um novo cliente (Pessoa Física ou Jurídica)
-    static async adicionarCliente(req, res) {
+        // Verifique se email e senha estão definidos e não são vazios
+        if (!email || !senha) {
+            return res.status(400).json({ message: 'Email e senha são obrigatórios.' });
+        }
+
         try {
-            // Recebe os dados do corpo da requisição
-            const {
-                tipo,
-                nome,
-                sexo,
-                cpf,
-                telefone,
-                celular,
-                email,
-                senha,
-                logradouro,
-                numero,
-                municipio,
-                cidade,
-                estado,
-                dataNascimento,
-                rg,
-                nacionalidade,
-                estadoCivil,
-                cnpj,
-                razaoSocial,
-                inscricaoEstadual
-            } = req.body;
+            // Chama o serviço para buscar o cliente
+            const cliente = await ClienteService.buscarPorEmailESenha(email, senha);
 
-          
-
-            let novoCliente;
-
-            // Verifica o tipo de cliente (Pessoa Física ou Jurídica) e cria o modelo correspondente
-            if (tipo === 'F') {
-                novoCliente = new PessoaFisica(
-                    nome, telefone, celular, email, senha, logradouro, numero, municipio, cidade, estado, sexo, cpf, dataNascimento, rg, nacionalidade, estadoCivil
-                );
-            } else if (tipo === 'J') {
-                novoCliente = new PessoaJuridica(
-                    nome, telefone, celular, email, senha, logradouro, numero, municipio, cidade, estado,
-                    cnpj, razaoSocial, inscricaoEstadual
-                );
+            if (cliente) {
+                return res.status(200).json(cliente); // Retorna o cliente encontrado
             } else {
-                return res.status(400).json({ message: 'Tipo de cliente inválido.' });
+                return res.status(404).json({ message: 'Cliente não encontrado ou senha inválida.' }); // Cliente não encontrado ou senha inválida
             }
-
-
-
-            // Valida os dados do cliente
-            novoCliente.validarCampos();
-
-            // Chama o serviço para adicionar o cliente
-            const clienteCriado = await ClienteService.adicionar(novoCliente);
-
-            // Retorna o sucesso
-            return res.status(201).json({
-                message: "Cliente adicionado com sucesso!",
-                data: clienteCriado
-            });
         } catch (error) {
-            // Em caso de erro, retorna uma resposta apropriada
-            return res.status(400).json({
-                message: "Erro ao adicionar cliente",
-                error: error.message
-            });
+            return res.status(500).json({ message: 'Erro ao buscar cliente.', error: error.message }); // Erro no servidor
         }
     }
 
-    //*------------------------------------------------------------------------------------------------------------------------- */
 
-    // Método para editar um cliente existente
-    static async editarCliente(req, res) {
-        // Obtém o ID do cliente dos parâmetros da URL
-        const { id } = req.params;
-
+    // Método para adicionar um novo cliente
+    static async adicionarCliente(req, res) {
         try {
-            // Recebe os dados do corpo da requisição
+            // Extrai os dados do corpo da requisição (dados enviados via POST)
             const {
-                tipo,
-                nome,
-                sexo,
-                cpf,
-                telefone,
-                celular,
-                email,
-                senha,
-                logradouro,
-                numero,
-                municipio,
-                cidade,
-                estado,
-                dataNascimento,
-                rg,
-                nacionalidade,
-                estadoCivil,
-                cnpj,
-                razaoSocial,
-                inscricaoEstadual
+                ClienteNome, ClienteTelefone, ClienteCelular, ClienteEmail,
+                ClienteSenha, ClienteLogradouro, ClienteNumero, ClienteMunicipio,
+                ClienteCidade, ClienteEstado, ClienteSexo, ClienteCpf,
+                ClienteDataNascimento, ClienteRg, ClienteNacionalidade, ClienteEstadoCivil
             } = req.body;
 
-          
+            // Cria uma nova instância do modelo Cliente
+            const novoCliente = new Cliente({
+                ClienteNome,
+                ClienteTelefone,
+                ClienteCelular,
+                ClienteEmail,
+                ClienteSenha,
+                ClienteLogradouro,
+                ClienteNumero,
+                ClienteMunicipio,
+                ClienteCidade,
+                ClienteEstado,
+                ClienteSexo,
+                ClienteCpf,
+                ClienteDataNascimento,
+                ClienteRg,
+                ClienteNacionalidade,
+                ClienteEstadoCivil,
+                ClienteAtivo: true // Definido como ativo por padrão
+            });
 
-            let novoCliente;
+            // Adiciona o cliente usando o serviço
+            const clienteCriado = await ClienteService.adicionar(novoCliente);
 
-            // Verifica o tipo de cliente (Pessoa Física ou Jurídica) e cria o modelo correspondente
-            if (tipo === 'F') {
-                novoCliente = new PessoaFisica(
-                    nome, telefone, celular, email, senha, logradouro, numero, municipio, cidade, estado, sexo, cpf, dataNascimento, rg, nacionalidade, estadoCivil
-                );
-            } else if (tipo === 'J') {
-                novoCliente = new PessoaJuridica(
-                    nome, telefone, celular, email, senha, logradouro, numero, municipio, cidade, estado,
-                    cnpj, razaoSocial, inscricaoEstadual
-                );
-            } else {
-                return res.status(400).json({ message: 'Tipo de cliente inválido.' });
-            }
+            // Retorna o cliente criado com status 201 (criado)
+            res.status(201).json(clienteCriado);
+        } catch (error) {
+            // Em caso de erro, retorna uma mensagem de erro e o status 500 (erro do servidor)
+            res.status(500).json({ message: 'Erro ao adicionar cliente', error });
+        }
+    }
 
-            console.log(novoCliente)
+    // Método para atualizar um cliente
+    static async atualizarCliente(req, res) {
+        const { id } = req.params; // O ID do cliente deve ser passado na URL
+        const dadosAtualizados = req.body; // Os novos dados devem ser enviados no corpo da requisição
 
-            // Valida os dados do cliente
-            novoCliente.validarCampos();
+        try {
+            // Cria uma nova instância do modelo Cliente com os dados atualizados
+            const clienteAtualizado = new Cliente(dadosAtualizados);
+            const resultado = await ClienteService.atualizarCliente(id, clienteAtualizado);
 
-            // Chama o serviço para atualizar os dados do cliente
-            //const resultado = await ClienteService.editar(id, novoCliente);
-            
-            // Verifica se o cliente foi atualizado
             if (resultado) {
-                res.status(200).json({ message: 'Cliente atualizado com sucesso', cliente: resultado });
+                res.status(200).json({ message: 'Cliente atualizado com sucesso' });
             } else {
                 res.status(404).json({ message: 'Cliente não encontrado' });
             }
         } catch (error) {
-            res.status(500).json({ message: 'Erro ao atualizar cliente', error: error.message });
+            res.status(500).json({ message: 'Erro ao atualizar cliente', error });
+        }
+    }
+
+    //Método para apagar um cliente
+    static async deletarCliente(req, res) {
+        const { id } = req.params; // O ID do cliente deve ser passado
+
+        try {
+            // Chama o serviço para deletar o cliente
+            const resultado = await ClienteService.deletarCliente(id);
+
+            if (resultado) {
+                return res.status(200).json({ message: "Cliente deletado com sucesso." });
+            } else {
+                return res.status(404).json({ message: "Cliente não encontrado." });
+            }
+        } catch (error) {
+            return res.status(500).json({ message: "Erro ao deletar o cliente.", error: error.message });
         }
     }
 }
+
 
 module.exports = ClienteController;
