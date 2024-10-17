@@ -41,8 +41,9 @@ header {
 
 #name h1 {
     font-size: 80px; /* Tamanho do texto */
-    font-family: 'Paint Brush Script', sans-serif;                                               
+    font-family: 'Rock Salt', cursive; /* Fonte estilo grafite aplicada */
     margin: 0; /* Remover margens padrão do h1 */
+    color: #28335e; /* Cor do texto */
 }
 
 #components {

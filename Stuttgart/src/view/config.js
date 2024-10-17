@@ -1,6 +1,3 @@
-// Chama a função para buscar os veículos quando a página carregar
-window.onload = buscarVeiculos;
-
 async function buscarVeiculos() {
     try {
         const response = await fetch('http://localhost:3000/api/veiculos'); // Ajuste a URL conforme necessário
