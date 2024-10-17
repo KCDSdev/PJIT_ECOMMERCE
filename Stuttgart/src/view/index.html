@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
-
-
 </head>
 
 <body>
@@ -26,21 +24,67 @@
             <div id="user-info" style="display: none;">
                 <i class="fas fa-user-circle" aria-hidden="true"></i> <!-- Ícone do usuário -->
                 <span id="username-display"></span> <!-- Nome do usuário logado -->
-                <button onclick="logout()">Sair</button> <!-- Botão para logout -->
+                <button id="Sair" onclick="logout()">Sair</button> <!-- Botão para logout -->
             </div>
         </div>
 
         <div id="login-form" style="display: none;">
-            <h2>Login</h2>
             <input type="text" id="Email" placeholder="Email" required>
             <input type="password" id="password" placeholder="Senha" required>
             <button onclick="login()">Entrar</button>
-            <button onclick="hideLoginForm()">Cadastrar</button>
+            <button onclick="showCadastroForm()">Cadastrar</button>
         </div>
-    </header>
 
+        
+    </header>
     <hr>
+
+    <!-- Formulário de Cadastro -->
+    <div id="cadastro-form" style="display: none;">
+        <h2>Cadastro de Cliente</h2>
+        <form id="form-cadastro">
+            
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required><br>
+
+            <label for="telefone">Telefone:</label>
+            <input type="text" id="telefone" name="telefone" required><br>
+
+            <label for="celular">Celular:</label>
+            <input type="text" id="celular" name="celular"><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required><br>
+
+            <label for="logradouro">Logradouro:</label>
+            <input type="text" id="logradouro" name="logradouro"><br>
+
+            <label for="numero">Número:</label>
+            <input type="number" id="numero" name="numero"><br>
+
+            <label for="municipio">Município:</label>
+            <input type="text" id="municipio" name="municipio"><br>
+
+            <label for="cidade">Cidade:</label>
+            <input type="text" id="cidade" name="cidade"><br>
+
+            <label for="estado">Estado:</label>
+            <input type="text" id="estado" name="estado" maxlength="2"><br>
+
+            <button type="submit">Cadastrar</button>
+            <button type="button" onclick="hideCadastroForm()">Cancelar</button>
+        </form>
+    </div>
+
     <div id="veiculos-container"></div>
+    <hr>
+    <footer>
+        <p>Stuttgart.INC since 1994</p>
+    </footer>
+
     <script src="./config.js"></script>
     <script src="./login.js"></script>
 
