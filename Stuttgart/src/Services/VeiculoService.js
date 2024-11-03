@@ -5,8 +5,8 @@ class veiculoService {
     // Método para listar todos os veículos usando uma query SQL
     static async listarTodos() {
         try {
-            // Executa uma query SQL para selecionar todos os veículos
-            const [results] = await db.query('SELECT * FROM veiculos');
+            // Executa uma query SQL para selecionar todos os veículos com disponibilidade verdadeira
+            const [results] = await db.query('SELECT * FROM Veiculos WHERE disponibilidade = TRUE');
             return results; // Retorna os resultados da consulta
         } catch (error) {
             // Em caso de erro, lança uma exceção para ser tratada no controller
@@ -96,3 +96,4 @@ class veiculoService {
 }
 
 module.exports = veiculoService;
+

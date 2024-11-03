@@ -51,6 +51,9 @@ class ClienteController {
                 ClienteDataNascimento, ClienteRg, ClienteNacionalidade, ClienteEstadoCivil
             } = req.body;
 
+            console.log(ClienteNome);
+           
+
             // Cria uma nova instância do modelo Cliente
             const novoCliente = new Cliente({
                 ClienteNome,
@@ -71,6 +74,8 @@ class ClienteController {
                 ClienteEstadoCivil,
                 ClienteAtivo: true // Definido como ativo por padrão
             });
+
+            console.log(novoCliente)
 
             // Adiciona o cliente usando o serviço
             const clienteCriado = await ClienteService.adicionar(novoCliente);
