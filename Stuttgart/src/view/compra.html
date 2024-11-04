@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +32,7 @@
         }
 
         input, select {
-            width: 100%;
+            width: 90%;
             padding: 8px;
             margin: 5px 0 15px;
             border: 1px solid #ccc;
@@ -61,31 +60,43 @@
             text-align: center;
             margin-top: 20px;
         }
+
+        .veiculo-valor {
+            font-weight: bold;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            color: #333;
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Compra de Veículo</h1>
+        <div id="name">
+            <h1>
+                <strong>Stuttgart</strong>
+            </h1>
+        </div>
     </header>
 
     <main>
         <form id="form-compra" onsubmit="finalizarCompra(event)">
             <label for="veiculo">Selecionar Veículo:</label>
-            <select id="veiculo" required>
+            <select id="veiculo" required onchange="atualizarValorVeiculo()">
                 <option value="">--Selecione um veículo--</option>
                 <!-- As opções de veículos serão preenchidas aqui -->
             </select>
-            <label for="nomeComprador">Nome do Comprador:</label>
-            <input type="text" id="nomeComprador" placeholder="Nome do Comprador" required>
-            <label for="cpfComprador">CPF do Comprador:</label>
-            <input type="text" id="cpfComprador" placeholder="CPF do Comprador" required>
-            <label for="telefoneComprador">Telefone do Comprador:</label>
-            <input type="text" id="telefoneComprador" placeholder="Telefone do Comprador" required>
-            <label for="emailComprador">Email do Comprador:</label>
-            <input type="email" id="emailComprador" placeholder="Email do Comprador" required>
-            <label for="valorTotal">Valor Total:</label>
-            <input type="number" id="valorTotal" placeholder="Valor Total" required readonly>
+            <p id="veiculoValor" class="veiculo-valor">Valor do Veículo: R$ 0,00</p>
+            
+            <label for="tipoPagamento">Tipo de Pagamento:</label>
+            <select id="tipoPagamento" required>
+                <option value="credito">Crédito</option>
+                <option value="debito">Débito</option>
+            </select>
+
+            <label for="NúmeroCartao">Número do Cartão:</label>
+            <input type="text" id="NúmeroCartao" placeholder="Número do Cartão" required> 
+
             <button type="submit">Finalizar Compra</button>
             <button type="button" class="cancel-button" onclick="window.history.back()">Cancelar</button>
         </form>
@@ -98,11 +109,13 @@
     <script src="Exibe_Veiculos.js"></script>
 
     <script>
+        let veiculos = [];
+
         async function buscarVeiculos() {
             try {
-                const response = await fetch('http://localhost:3000/api/veiculos'); // Ajuste a URL conforme necessário
+                const response = await fetch('http://localhost:3000/api/veiculos');
                 if (!response.ok) throw new Error('Erro ao buscar veículos');
-                const veiculos = await response.json();
+                veiculos = await response.json();
                 exibirVeiculos(veiculos);
             } catch (error) {
                 console.error(error);
@@ -114,45 +127,28 @@
             const selectVeiculo = document.getElementById('veiculo');
             veiculos.forEach(veiculo => {
                 const option = document.createElement('option');
-                option.value = veiculo.id; // ou outro identificador
-                option.textContent = `${veiculo.modelo} / ${veiculo.placa}`; // Mostra modelo e placa
+                option.value = veiculo.id;
+                option.textContent = `${veiculo.modelo} / ${veiculo.placa}`;
+                option.setAttribute("data-valor", veiculo.valor); // Armazena o valor do veículo no atributo data-valor
                 selectVeiculo.appendChild(option);
             });
+        }
+
+        function atualizarValorVeiculo() {
+            const selectVeiculo = document.getElementById('veiculo');
+            const veiculoSelecionado = selectVeiculo.options[selectVeiculo.selectedIndex];
+            const valorVeiculo = parseFloat(veiculoSelecionado.getAttribute("data-valor") || 0);
+            document.getElementById('veiculoValor').textContent = `Valor do Veículo: R$ ${valorVeiculo.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         }
 
         function finalizarCompra(event) {
             event.preventDefault();
             // Lógica para processar a compra
-            const compraData = {
-                veiculoId: document.getElementById('veiculo').value,
-                nome: document.getElementById('nomeComprador').value,
-                cpf: document.getElementById('cpfComprador').value,
-                telefone: document.getElementById('telefoneComprador').value,
-                email: document.getElementById('emailComprador').value,
-                valor: document.getElementById('valorTotal').value
-            };
-
-            // Enviar os dados da compra para o servidor (exemplo usando fetch)
-            fetch('http://localhost:3000/api/compras', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(compraData)
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Erro ao finalizar a compra');
-                alert("Compra finalizada com sucesso!");
-            })
-            .catch(error => {
-                console.error(error);
-                alert('Erro ao finalizar a compra.');
-            });
+            alert("Compra finalizada com sucesso!");
         }
 
         // Chama a função ao carregar a página
         window.onload = buscarVeiculos;
     </script>
 </body>
-
 </html>
