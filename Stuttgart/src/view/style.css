@@ -1,8 +1,9 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    background: linear-gradient(to right, #ffffff, #8d8425);
+    background: linear-gradient(to right, #ffffff, #656565);
 }
+
 
 header {
     display: flex;
